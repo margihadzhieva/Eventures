@@ -1,0 +1,65 @@
+.bg-eventures {
+    width: auto;
+    height: auto;
+    background-color: #d0d1b3;
+}
+
+.w-5 {
+    width: 5%;
+}
+
+.w-10 {
+    width: 10%;
+}
+
+.w-15 {
+    width: 15%;
+}
+
+.w-20 {
+    width: 20%;
+}
+
+.w-30 {
+    width: 30%;
+}
+
+.w-35 {
+    width: 35%;
+}
+
+.w-40 {
+    width: 40%;
+}
+
+.w-95 {
+    width: 95%;
+}
+
+.hr-2 {
+    height: 2px;
+}
+
+.text-eventures {
+    color: #AFEEEE;
+}
+
+.nav-link-black {
+    color: #090909;
+    outline: none;
+    background: transparent;
+    border: none;
+}
+
+.nav-link-black:hover {
+    color: #090909;
+    cursor: pointer;
+}
+
+.nav-link-black:focus {
+    color: #090909;
+}
+
+/*.dropdown-toggle::after {*/
+    /*display:none*/
+/*}*/
