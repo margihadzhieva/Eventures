@@ -8,7 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.context.annotation.Bean;
 
-@Controller
+
+@Configuration
 public class ApplicationBeanConfiguration {
     @Bean
     public ModelMapper modelMapper() {
