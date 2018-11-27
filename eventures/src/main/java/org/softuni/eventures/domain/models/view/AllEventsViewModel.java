@@ -1,14 +1,9 @@
-package org.softuni.eventures.domain.entities;
+package org.softuni.eventures.domain.models.view;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "events")
-public class Event extends BaseEntity {
+public class AllEventsViewModel {
     private String Id;
     private String name;
     private String place;
@@ -17,15 +12,13 @@ public class Event extends BaseEntity {
     private Integer totalTickets;
     private BigDecimal pricePerTicket;
 
-    public Event() {
+    public AllEventsViewModel() {
     }
 
-    @Override
     public String getId() {
         return Id;
     }
 
-    @Override
     public void setId(String id) {
         Id = id;
     }

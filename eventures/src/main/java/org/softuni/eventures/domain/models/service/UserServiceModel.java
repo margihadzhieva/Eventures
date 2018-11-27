@@ -5,6 +5,16 @@ import org.softuni.eventures.domain.entities.UserRole;
 import java.util.Set;
 
 public class UserServiceModel {
+    private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     private String username;
 
     private String email;

@@ -1,33 +1,29 @@
-package org.softuni.eventures.domain.entities;
+package org.softuni.eventures.domain.models.service;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "events")
-public class Event extends BaseEntity {
-    private String Id;
+public class MyEventsServiceModel {
+    private String id;
+
     private String name;
+
     private String place;
+
     private LocalDateTime startTime;
+
     private LocalDateTime endTime;
-    private Integer totalTickets;
-    private BigDecimal pricePerTicket;
 
-    public Event() {
+    private Integer tickets;
+
+    public MyEventsServiceModel() {
     }
 
-    @Override
     public String getId() {
-        return Id;
+        return id;
     }
 
-    @Override
     public void setId(String id) {
-        Id = id;
+        this.id = id;
     }
 
     public String getName() {
@@ -62,19 +58,11 @@ public class Event extends BaseEntity {
         this.endTime = endTime;
     }
 
-    public Integer getTotalTickets() {
-        return totalTickets;
+    public Integer getTickets() {
+        return tickets;
     }
 
-    public void setTotalTickets(Integer totalTickets) {
-        this.totalTickets = totalTickets;
-    }
-
-    public BigDecimal getPricePerTicket() {
-        return pricePerTicket;
-    }
-
-    public void setPricePerTicket(BigDecimal pricePerTicket) {
-        this.pricePerTicket = pricePerTicket;
+    public void setTickets(Integer tickets) {
+        this.tickets = tickets;
     }
 }

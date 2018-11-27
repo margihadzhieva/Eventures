@@ -1,33 +1,23 @@
-package org.softuni.eventures.domain.entities;
+package org.softuni.eventures.domain.models.binding;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "events")
-public class Event extends BaseEntity {
-    private String Id;
+public class EventCreateBindingModel {
     private String name;
     private String place;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime startTime;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm", iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime endTime;
     private Integer totalTickets;
     private BigDecimal pricePerTicket;
 
-    public Event() {
-    }
-
-    @Override
-    public String getId() {
-        return Id;
-    }
-
-    @Override
-    public void setId(String id) {
-        Id = id;
+    public EventCreateBindingModel() {
     }
 
     public String getName() {
