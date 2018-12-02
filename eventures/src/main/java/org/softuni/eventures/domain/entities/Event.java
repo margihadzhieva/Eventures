@@ -9,27 +9,26 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "events")
 public class Event extends BaseEntity {
-    private String Id;
+    private static final Integer EVENT_DEFAULT_SOLD_TICKETS = 0;
+
     private String name;
+
     private String place;
+
     private LocalDateTime startTime;
+
     private LocalDateTime endTime;
-    private Integer totalTickets;
+
+    private int totalTickets;
+
+    private int soldTickets;
+
     private BigDecimal pricePerTicket;
 
     public Event() {
     }
 
-    @Override
-    public String getId() {
-        return Id;
-    }
-
-    @Override
-    public void setId(String id) {
-        Id = id;
-    }
-
+    @Column(name = "name", nullable = false)
     public String getName() {
         return name;
     }
@@ -38,6 +37,7 @@ public class Event extends BaseEntity {
         this.name = name;
     }
 
+    @Column(name = "place", nullable = false)
     public String getPlace() {
         return place;
     }
@@ -46,6 +46,7 @@ public class Event extends BaseEntity {
         this.place = place;
     }
 
+    @Column(name = "startTime", nullable = false)
     public LocalDateTime getStartTime() {
         return startTime;
     }
@@ -54,6 +55,7 @@ public class Event extends BaseEntity {
         this.startTime = startTime;
     }
 
+    @Column(name = "endTime", nullable = false)
     public LocalDateTime getEndTime() {
         return endTime;
     }
@@ -62,19 +64,34 @@ public class Event extends BaseEntity {
         this.endTime = endTime;
     }
 
-    public Integer getTotalTickets() {
+    @Column(name = "total_tickets", nullable = false)
+    public int getTotalTickets() {
         return totalTickets;
     }
 
-    public void setTotalTickets(Integer totalTickets) {
+    public void setTotalTickets(int totalTickets) {
         this.totalTickets = totalTickets;
     }
 
+    @Column(name = "sold_tickets", nullable = false)
+    public int getSoldTickets() {
+        return this.soldTickets;
+    }
+
+    public void setSoldTickets(int soldTickets) {
+        this.soldTickets = soldTickets;
+    }
+
+    @Column(name = "price_per_ticket", nullable = false)
     public BigDecimal getPricePerTicket() {
         return pricePerTicket;
     }
 
     public void setPricePerTicket(BigDecimal pricePerTicket) {
         this.pricePerTicket = pricePerTicket;
+    }
+
+    public Integer extractRemainingTickets() {
+        return this.getTotalTickets() - this.getSoldTickets();
     }
 }

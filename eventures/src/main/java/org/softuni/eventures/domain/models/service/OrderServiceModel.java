@@ -8,14 +8,6 @@ import java.time.LocalDateTime;
 public class OrderServiceModel {
     private String id;
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     private LocalDateTime orderedOn;
 
     private Event event;
@@ -25,6 +17,14 @@ public class OrderServiceModel {
     private Integer ticketsCount;
 
     public OrderServiceModel() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public LocalDateTime getOrderedOn() {

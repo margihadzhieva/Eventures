@@ -7,6 +7,7 @@ import org.softuni.eventures.domain.models.service.EventServiceModel;
 import org.softuni.eventures.domain.models.service.MyEventsServiceModel;
 import org.softuni.eventures.domain.models.service.OrderServiceModel;
 import org.softuni.eventures.repository.EventRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -26,26 +27,39 @@ public class EventServiceImpl implements EventService {
 
     private final OrderService orderService;
 
-        public EventServiceImpl(EventRepository eventRepository, ModelMapper modelMapper, UserService userService, OrderService orderService) {
-            this.eventRepository = eventRepository;
-            this.modelMapper = modelMapper;
-            this.userService = userService;
-            this.orderService = orderService;
-        }
+    @Autowired
+    public EventServiceImpl(EventRepository eventRepository, ModelMapper modelMapper, UserService userService, OrderService orderService) {
+        this.eventRepository = eventRepository;
+        this.modelMapper = modelMapper;
+        this.userService = userService;
+        this.orderService = orderService;
+    }
 
 
-        @Override
+    private void placeOrder(Event event, User customer, Integer tickets) {
+        OrderServiceModel orderServiceModel = new OrderServiceModel();
+
+        orderServiceModel.setOrderedOn(LocalDateTime.now());
+        orderServiceModel.setEvent(event);
+        orderServiceModel.setCustomer(customer);
+        orderServiceModel.setTicketsCount(tickets);
+
+        this.orderService.createOrder(orderServiceModel);
+    }
+
+
+    @Override
     public boolean createEvent(EventServiceModel eventServiceModel) {
-            Event eventEntity = this.modelMapper.map(eventServiceModel, Event.class);
+        Event eventEntity = this.modelMapper.map(eventServiceModel, Event.class);
 
-            try {
-                this.eventRepository.save(eventEntity);
-            } catch (Exception ignored) {
-                return false;
-            }
-
-            return true;
+        try {
+            this.eventRepository.save(eventEntity);
+        } catch (Exception ignored) {
+            return false;
         }
+
+        return true;
+    }
 
     @Override
     public Set<EventServiceModel> getAll() {
@@ -57,19 +71,26 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public boolean orderEvent(Integer tickets, String eventId, String currentUser) {
-        Event event = this
-                .eventRepository
+    public boolean orderEvent(String eventId, String username, Integer tickets) {
+        Event event = this.eventRepository
                 .findById(eventId)
                 .orElse(null);
 
-        User customer = (User)this
+        User customer = (User) this
                 .userService
-                .loadUserByUsername(currentUser);
+                .loadUserByUsername(username);
 
-        if(event == null || customer == null){
-            throw new  IllegalArgumentException("Order Event ot Customer cannot be null!");
+        if (event == null || customer == null) {
+            throw new IllegalArgumentException("Order Event or Customer cannot be null!");
         }
+
+        if (event.extractRemainingTickets() < tickets) {
+            return false;
+        }
+
+        event
+                .setSoldTickets(event.getSoldTickets()
+                        + tickets);
 
         OrderServiceModel orderServiceModel = new OrderServiceModel();
 
@@ -79,9 +100,10 @@ public class EventServiceImpl implements EventService {
         orderServiceModel.setTicketsCount(tickets);
 
         return this.orderService.createOrder(orderServiceModel);
-
-
     }
+
+
+
 
     @Override
     public Set<MyEventsServiceModel> myEvents(String currentUser) {
@@ -93,6 +115,7 @@ public class EventServiceImpl implements EventService {
 
         Set<MyEventsServiceModel> myEventsServiceModels = new HashSet<>();
 
+        modelMapper.getConfiguration().setAmbiguityIgnored(true);
         for (OrderServiceModel orderServiceModel : allOrdersFromUser) {
             MyEventsServiceModel resultModel = this
                     .modelMapper.map(orderServiceModel.getEvent(), MyEventsServiceModel.class);
@@ -103,7 +126,6 @@ public class EventServiceImpl implements EventService {
         }
 
         return myEventsServiceModels;
-
     }
 }
 

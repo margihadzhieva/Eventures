@@ -11,7 +11,7 @@ public interface EventService {
 
     Set<EventServiceModel> getAll();
 
-     boolean orderEvent(Integer tickets, String eventId, String currentUser);
+    boolean orderEvent(String eventId, String username, Integer tickets);
 
 
     Set<MyEventsServiceModel> myEvents(String currentUser);

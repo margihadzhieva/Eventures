@@ -4,8 +4,26 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class EventServiceModel {
-
     private String id;
+
+    private String name;
+
+    private String place;
+
+    private LocalDateTime startTime;
+
+    private LocalDateTime endTime;
+
+    private int totalTickets;
+
+    private int soldTickets;
+
+    private int remainingTickets;
+
+    private BigDecimal pricePerTicket;
+
+    public EventServiceModel() {
+    }
 
     public String getId() {
         return id;
@@ -13,16 +31,6 @@ public class EventServiceModel {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    private String name;
-    private String place;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
-    private Integer totalTickets;
-    private BigDecimal pricePerTicket;
-
-    public EventServiceModel() {
     }
 
     public String getName() {
@@ -57,13 +65,26 @@ public class EventServiceModel {
         this.endTime = endTime;
     }
 
-    public Integer getTotalTickets() {
+    public int getTotalTickets() {
         return totalTickets;
     }
 
-    public void setTotalTickets(Integer totalTickets) {
+    public void setTotalTickets(int totalTickets) {
         this.totalTickets = totalTickets;
     }
+
+    public int getSoldTickets() {
+        return soldTickets;
+    }
+
+    public void setSoldTickets(int soldTickets) {
+        this.soldTickets = soldTickets;
+    }
+
+    public int getRemainingTickets() {
+        return this.getTotalTickets()- this.soldTickets;
+    }
+
 
     public BigDecimal getPricePerTicket() {
         return pricePerTicket;

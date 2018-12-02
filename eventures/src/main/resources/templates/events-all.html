@@ -20,7 +20,8 @@
                 <th class="w-15">Start</th>
                 <th class="w-15">End</th>
                 <th class="w-10">Price</th>
-                <th class="w-25">Actions</th>
+                <th class="w-15">Remaining Tickets</th>
+                <th class="w-10">Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -30,17 +31,37 @@
                 <td class="w-15" th:text="*{#temporals.format(startTime, 'hh:mm | dd/MM/yyyy')}"></td>
                 <td class="w-15" th:text="*{#temporals.format(endTime, 'hh:mm | dd/MM/yyyy')}"></td>
                 <td class="w-10" th:text="*{'$' + pricePerTicket}"></td>
-                <td class="w-25">
-                    <form class="form-inline d-flex justify-content-between" th:action="@{/events/order}" th:method="POST">
-                        <div class="form-group w-75">
-                            <label class="mb-1" th:for="*{'tickets-' + id}">Tickets</label>
-                            <input type="number" name="tickets" class="form-control ml-3 w-75" th:id="*{'tickets-' + id}"/>
-                            <input type="hidden" name="eventId" th:value="*{id}">
+                <td class="w-15" th:text="*{remainingTickets}"></td>
+                <td class="w-10">
+                    <button type="button" class="btn bg-eventures" data-toggle="modal" th:data-target="*{'#orderFormModal' + id}">Order</button>
+                    <!--Modal-->
+                    <div class="modal fade" th:id="*{'orderFormModal' + id}" tabindex="-1" role="dialog" th:aria-labelledby="*{'orderFormModalLabel' + id}"
+                         aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" th:id="*{'orderFormModalLabel' + id}" th:text="|Order tickets for *{name}|"></h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <form class="form-inline d-flex justify-content-between" th:action="@{/events/order}" th:method="POST">
+                                    <div class="modal-body">
+
+                                        <div class="form-group">
+                                            <label class="mb-1" th:for="*{'tickets-' + id}">Tickets</label>
+                                            <input type="number" name="tickets" class="form-control ml-3 w-75" th:id="*{'tickets-' + id}"/>
+                                            <input type="hidden" name="eventId" th:value="*{id}">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn bg-eventures">Order</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
-                        <div class="button-holder ml-1 w-20">
-                            <button type="submit" class="btn bg-eventures">Order</button>
-                        </div>
-                    </form>
+                    </div>
                 </td>
             </tr>
             </tbody>
