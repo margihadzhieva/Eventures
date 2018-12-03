@@ -9,6 +9,7 @@ import org.softuni.eventures.domain.models.service.OrderServiceModel;
 import org.softuni.eventures.repository.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -71,7 +72,8 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public boolean orderEvent(String eventId, String username, Integer tickets) {
+    @Transactional
+    public void orderEvent(String eventId, String username, Integer tickets) {
         Event event = this.eventRepository
                 .findById(eventId)
                 .orElse(null);
@@ -80,27 +82,21 @@ public class EventServiceImpl implements EventService {
                 .userService
                 .loadUserByUsername(username);
 
-        if (event == null || customer == null) {
+        if(event == null || customer == null) {
             throw new IllegalArgumentException("Order Event or Customer cannot be null!");
         }
 
-        if (event.extractRemainingTickets() < tickets) {
-            return false;
+        if(event.extractRemainingTickets() < tickets) {
+            throw new IllegalArgumentException("Not enough tickets.");
         }
 
         event
                 .setSoldTickets(event.getSoldTickets()
                         + tickets);
 
-        OrderServiceModel orderServiceModel = new OrderServiceModel();
-
-        orderServiceModel.setOrderedOn(LocalDateTime.now());
-        orderServiceModel.setEvent(event);
-        orderServiceModel.setCustomer(customer);
-        orderServiceModel.setTicketsCount(tickets);
-
-        return this.orderService.createOrder(orderServiceModel);
+        this.placeOrder(event, customer, tickets);
     }
+
 
 
 

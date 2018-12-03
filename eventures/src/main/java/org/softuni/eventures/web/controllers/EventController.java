@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -69,14 +71,24 @@ public class EventController extends BaseController {
 
     @PostMapping("/order")
     public ModelAndView order(@ModelAttribute EventOrderBindingModel eventOrderBindingModel, Principal principal, ModelAndView modelAndView){
-        boolean result = this.eventService
-                .orderEvent( eventOrderBindingModel.getEventId(), principal.getName(), eventOrderBindingModel.getTickets());
+//        boolean result = this.eventService
+//                .orderEvent( eventOrderBindingModel.getEventId(), principal.getName(), eventOrderBindingModel.getTickets());
+//
+//     if(!result) {
+//         modelAndView.addObject("status", "Not enough tickets: ");
+//     } else {
+//         modelAndView.addObject("status", "Successfully bought tickets");
+//    }
 
-     if(!result) {
-         modelAndView.addObject("status", "Not enough tickets: ");
-     } else {
-         modelAndView.addObject("status", "Successfully bought tickets");
-    }
+        Map<String, Object> jmsArguments = new HashMap<String, Object>() {{
+            put("tickets", eventOrderBindingModel.getTickets());
+            put("eventId", eventOrderBindingModel.getEventId());
+            put("username", principal.getName());
+        }};
+
+        jmsTemplate.setDefaultDestinationName("order-event-listener");
+        jmsTemplate.convertAndSend(jmsArguments);
+
 
         return this.redirect("all");
 }
