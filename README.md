@@ -1,3 +1,12 @@
+This is Web Application with the following technologies and frameworks:
+-Spring Framework
+-Thymeleaf template 
+-MySQL
+-Spring Data/ Hibernate 
+-AJAX
+-Bootstrap
+
+
 Eventures
 Eventures Inc. is a fast-rising newly made Start-Up Company, which specializes in Event Tickets Sales. It is said to be the killer of systems like Eventim, Eventbride, etc.
 You have been appointed as the developer of the main web application. This is a great responsibility, so do your best and do not dissapoint your employers. The application functionality is not that complex, and it will be separated into several parts, each part consisting of several tasks. 
